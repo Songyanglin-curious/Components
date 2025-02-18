@@ -1,0 +1,99 @@
+.btn-group-wrapper {
+    display: flex;
+}
+
+.btn-group-wrapper .btn-group-item {
+
+    height: 32px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-right: 12px;
+    border-radius: 5px;
+    background: #9de8e2;
+}
+
+.btn-group-wrapper .btn-group-item-normal {
+    /* background: url("/i/mianyangfuhe/dark/button-normal.png") no-repeat 0 0 / 100% 100%;
+    color: #E7FCFF; */
+}
+
+.btn-group-wrapper .btn-group-item-normal:hover {
+    /* background: url("/i/mianyangfuhe/dark/button-active.png") no-repeat 0 0 / 100% 100%;
+    color: #E7FCFF; */
+    color: blue;
+}
+
+.btn-group-wrapper .btn-group-item-active {
+    /* background: url("/i/mianyangfuhe/dark/button-active.png") no-repeat 0 0 / 100% 100%;
+    color: #E7FCFF; */
+    color: red;
+}
+
+.vertical-btn-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.vertical-btn-wrap .btn-group-item {
+    padding: 0 20px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-bottom: 6px;
+    border-radius: 5px;
+
+}
+
+.vertical-btn-wrap .btn-group-item-normal {
+    background: url("/i/mianyangfuhe/dark/button-normal.png") no-repeat 0 0 / 100% 100%;
+    color: #E7FCFF;
+}
+
+.vertical-btn-wrap .btn-group-item-normal:hover {
+    background: url("/i/mianyangfuhe/dark/button-active.png") no-repeat 0 0 / 100% 100%;
+    color: #E7FCFF;
+}
+
+.vertical-btn-wrap .btn-group-item-active {
+    background: url("/i/mianyangfuhe/dark/button-active.png") no-repeat 0 0 / 100% 100%;
+    color: #E7FCFF;
+}
+
+.btn-ja {
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn-ja .btn-group-item {
+    width: 100px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+
+.btn-ja .btn-group-item-normal {
+    color: #0e8e88;
+    border: solid 1px #46b5ac;
+    background: #f0fdff;
+}
+
+.btn-ja .btn-group-item-normal:hover {
+    color: #fff;
+    background: #098482;
+    border: solid 1px #098482;
+}
+
+.btn-ja .btn-group-item-active {
+    color: #fff;
+    background: #098482;
+    border: solid 1px #098482;
+}

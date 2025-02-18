@@ -1,0 +1,143 @@
+/* 定义颜色变量 */
+:root {
+    --table-color: #44474b;
+    /* 表格文字颜色 */
+    --table-border-color: #cccccc;
+    /* 边框颜色 */
+    --th-bg: #0ca159;
+    /* 表头背景颜色 */
+    --td-bg: #f8f9fa;
+    /* 表格单元格背景颜色 */
+    --tr2n-td-bg: #e9ecef;
+    /* 偶数行背景颜色 */
+    --hover-bg: #d1ecf1;
+    /* 悬停行背景颜色 */
+    --menu-bg: #d1e0df;
+    /* 菜单背景颜色 */
+    --edit-bg1: #ce3737;
+    /* 第一编辑按钮背景颜色 */
+    --edit-bg1-hover: #cf6969;
+    /* 第一编辑按钮悬停颜色 */
+    --edit-bg2: #ea7a28;
+    /* 第二编辑按钮背景颜色 */
+    --edit-bg2-hover: #e3985f;
+    /* 第二编辑按钮悬停颜色 */
+    --edit-bg3: #2592df;
+    /* 第三编辑按钮背景颜色 */
+    --edit-bg3-hover: #83bddf;
+    /* 第三编辑按钮悬停颜色 */
+    --preview-bg1: #ce3737;
+    /* 第一预览背景颜色 */
+    --preview-bg2: #ea7a28;
+    /* 第二预览背景颜色 */
+    --preview-bg3: #2592df;
+    /* 第三预览背景颜色 */
+}
+
+/* 表格基本样式 */
+.time-table {
+    color: var(--table-color);
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* 表格单元格样式 */
+.time-table td,
+.time-table th {
+    text-align: center;
+    border: 1px solid var(--table-border-color);
+    width: 100px;
+    height: 38px;
+}
+
+/* 表头样式 */
+.time-table th {
+    background-color: var(--th-bg);
+    color: white;
+}
+
+/* 表格行样式 */
+.time-table tr {
+    background-color: var(--td-bg);
+}
+
+/* 斑马线效果 */
+.time-table tr:nth-child(even) {
+    background-color: var(--tr2n-td-bg);
+}
+
+/* 鼠标悬停效果 */
+.time-table tr:hover {
+    background-color: var(--hover-bg);
+}
+
+.time-table__menu {
+    background: var(--menu-bg);
+    padding: 10px;
+    color: var(--base-color);
+    border-radius: 5px;
+    border: solid 1px #20706a;
+    max-width: 200px;
+}
+
+.time-table__radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* 选中表格单元格的样式 */
+.time-table-selected {
+    background: #c4d6d5 !important;
+}
+
+.first-bd__edit {
+    background: var(--edit-bg1);
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+.first-bd__edit:hover {
+    background: var(--edit-bg1-hover);
+}
+
+.second-bd__edit {
+    background: var(--edit-bg2);
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+.second-bd__edit:hover {
+    background: var(--edit-bg2-hover);
+}
+
+.third-bd__edit {
+    background: var(--edit-bg3);
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+.third-bd__edit:hover {
+    background: var(--edit-bg3-hover);
+}
+
+.first-bd__preview {
+    background: var(--preview-bg1);
+    color: white;
+    text-align: center;
+}
+
+.second-bd__preview {
+    background: var(--preview-bg2);
+    color: white;
+    text-align: center;
+}
+
+.third-bd__preview {
+    background: var(--preview-bg3);
+    color: white;
+    text-align: center;
+}

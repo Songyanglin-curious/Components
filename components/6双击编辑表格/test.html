@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>可编辑表格</title>
+        <style>
+            table {
+                width: 50%;
+                border-collapse: collapse;
+            }
+
+            th,
+            td {
+                border: 1px solid #ccc;
+                padding: 10px;
+                text-align: left;
+            }
+
+            td.editable {
+                cursor: pointer;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <h2>可编辑表格示例</h2>
+
+        <table id="editableTable">
+            <tr>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>城市</th>
+            </tr>
+            <tr>
+                <td class="editable">张三</td>
+                <td class="editable">25</td>
+                <td class="editable">北京</td>
+            </tr>
+            <tr>
+                <td class="editable">李四</td>
+                <td class="editable">30</td>
+                <td class="editable">上海</td>
+            </tr>
+        </table>
+
+        <script>
+            document.querySelectorAll('.editable').forEach(cell => {
+                cell.addEventListener('dblclick', function () {
+                    const originalText = this.innerText;
+                    const input = document.createElement('input');
+                    input.value = originalText;
+                    this.innerText = '';
+                    this.appendChild(input);
+                    input.focus();
+
+                    input.addEventListener('blur', () => {
+                        this.innerText = input.value || originalText;
+                    });
+
+                    input.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            this.innerText = input.value || originalText;
+                        }
+                    });
+                });
+            });
+        </script>
+
+    </body>
+
+</html>

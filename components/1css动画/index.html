@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CSS Animation Demo</title>
+        <link rel="stylesheet" href="./cssanimation/cssanimation.min.css">
+        <script src="./cssanimation/letteranimation.min.js"></script>
+        <style>
+            .animation-group-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .animation-item {
+                border: 1px solid #ccc;
+                padding: 10px;
+                text-align: center;
+                width: 200px;
+                overflow: hidden;
+            }
+
+            .animation-item .animation-name {
+                font-weight: bold;
+            }
+
+            .animation-item .animation-chinese-name {
+                font-size: 0.9em;
+                color: #666;
+            }
+
+            .animation-item .animation-demo-container {
+                /* margin: 10px 0; */
+                padding: 10px 0 20px 0;
+            }
+
+            .animation-item .animation-button-container {
+                margin-top: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+            }
+
+            .animation-item button {
+                cursor: pointer;
+            }
+        </style>
+    </head>
+
+    <body>
+        <strong>
+            字体动画效果需要
+        </strong>
+        <div id="animation-container" class="animation-container"></div>
+        <script src="./animationOptions.js"></script>
+        <script>
+            // 假设这是从官网获取的动画类型数据
+
+            const container = document.getElementById('animation-container');
+
+            animationOptions.forEach(group => {
+                const label = `${group.cnLabel} - ${group.label}`;
+                const groupTitle = document.createElement('h3');
+                groupTitle.textContent = label;
+                container.appendChild(groupTitle);
+                const groupContainer = document.createElement('div');
+                groupContainer.className = 'animation-group-container';
+                container.appendChild(groupContainer);
+                const options = group.options;
+                options.forEach(animation => {
+                    const item = document.createElement('div');
+                    item.className = 'animation-item';
+                    const name = document.createElement('div');
+                    name.className = 'animation-name';
+                    name.textContent = animation.en;
+
+                    const chineseName = document.createElement('div');
+                    chineseName.className = 'animation-chinese-name';
+                    chineseName.textContent = animation.cn;
+
+                    const demoContainer = document.createElement('div');
+                    demoContainer.className = 'animation-demo-container';
+
+                    const animationClass = animation.value.trim();
+                    const demo = document.createElement('div');
+                    const realClass = `cssanimation ${animationClass} sequence`;
+                    demo.className = realClass;
+                    demo.textContent = `动画效果`;
+                    demoContainer.appendChild(demo);
+
+                    // 将动画效果这个文字拆成一个一个字 使用span标签包裹
+                    // const letters = ["动", "画", "效", "果"];
+                    // for (let i = 0; i < letters.length; i++) {
+                    //     const span = document.createElement('span');
+                    //     span.className = 'letter';
+                    //     span.style.animationDelay = `${i * 150}ms`;
+                    //     span.textContent = letters[i];
+                    //     demo.appendChild(span);
+                    // }
+
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.className = 'animation-button-container';
+
+
+                    const restart = document.createElement('button');
+                    restart.textContent = '重新开始';
+                    restart.onclick = () => {
+                        demo.classList.remove(animation.value);
+                        void demo.offsetWidth; // 强制重绘
+                        demo.classList.add(animation.value);
+                    };
+
+                    const copy = document.createElement('button');
+                    copy.textContent = '复制样式';
+                    copy.onclick = () => {
+                        navigator.clipboard.writeText(realClass).then(function () {
+                        }).catch(function (err) {
+                            console.error('复制失败:', err);
+                        });
+                    };
+                    buttonContainer.appendChild(restart);
+                    buttonContainer.appendChild(copy);
+                    item.appendChild(name);
+                    item.appendChild(chineseName);
+                    item.appendChild(demoContainer);
+                    item.appendChild(buttonContainer);
+
+                    groupContainer.appendChild(item);
+                });
+
+            });
+        </script>
+    </body>
+
+</html>

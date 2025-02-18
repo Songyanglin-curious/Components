@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>组件菜单</title>
+        <link rel="stylesheet" href="./index.css">
+        <style>
+            body {
+                /* font-family: Arial, sans-serif; */
+                display: flex;
+                margin: 0;
+                height: 100vh;
+                overflow: hidden;
+                background-color: #f4f4f4;
+            }
+
+            .container {
+                display: flex;
+                width: 100%;
+                height: 100%;
+            }
+
+            #menu {
+                width: 200px;
+                padding: 0;
+                overflow-y: auto;
+                border-right: solid 1px #ccc;
+                padding: 0 10px;
+            }
+
+            #menu li {
+                list-style: none;
+                /* 去掉小圆点 */
+                cursor: pointer;
+                margin: 10px 0;
+                /* 增加项之间的间距 */
+                padding: 10px;
+                /* 增加项的内边距 */
+                color: #333;
+                /* 字体颜色 */
+                transition: background-color 0.3s;
+                /* 背景色变化过渡效果 */
+            }
+
+            #menu li:hover {
+                background-color: #e0e0e0;
+                /* 悬停时的背景色 */
+            }
+
+            #menu li.selected {
+                background-color: #d1d1d1;
+                /* 选中项的背景色 */
+                font-weight: bold;
+                /* 选中项加粗 */
+            }
+
+            .content {
+                /* flex-grow: 1; */
+                flex: 1;
+                height: 100%;
+                padding: 0;
+                /* 使内容区充满可用空间 */
+                /* background-color: white; */
+                /* 统一背景色 */
+            }
+
+            #componentFrame {
+                width: 100%;
+                height: 100%;
+                border: none;
+                /* 移除默认边框 */
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div class="container">
+            <ul id="menu"></ul>
+            <div class="content">
+                <iframe id="componentFrame" src=""></iframe>
+            </div>
+        </div>
+        <script src="./components.js"></script>
+        <script>
+            // 确保在加载完成后执行以下代码
+            const subDirs = components;
+            const menu = document.getElementById('menu');
+            subDirs.forEach(dir => {
+                const li = document.createElement('li');
+                li.innerText = dir;
+                li.onclick = () => {
+                    // 移除其他项的选中状态
+                    document.querySelectorAll('#menu li').forEach(item => item.classList.remove('selected'));
+                    // 高亮当前选中的菜单项
+                    li.classList.add('selected');
+                    // 点击菜单项时更新 iframe 的 src
+                    document.getElementById('componentFrame').src = `components/${dir}/index.html`; // 修改路径
+                };
+                menu.appendChild(li);
+            });
+            //设置默认值
+            document.getElementById('componentFrame').src = `components/${subDirs[0]}/index.html`; // 修改路径
+            // 默认选中第一个菜单项
+            menu.firstChild.classList.add('selected');
+        </script>
+    </body>
+
+</html>

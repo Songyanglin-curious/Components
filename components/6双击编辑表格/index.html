@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="../../lib/vue.js"></script>
+        <script src="../../lib/iview.js"></script>
+        <link rel="stylesheet" href="../../lib/iview.css">
+        <script src="./edit_table.js"></script>
+        <style>
+            .red-row td {
+                background-color: #eb0b0b !important;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="app">
+            <edit_table :data="tableData" :columns="tableColumns" :row-class-name="rowClassName" @update-data="handleUpdateData"></edit_table>
+        </div>
+        <script>
+            var app = new Vue({
+                el: '#app',
+                data() {
+                    return {
+                        tableData: [
+                            { quarter: '00:15', plan: 100, diff: 30, cq: 40, jy: 30 },
+                            { quarter: '00:30', plan: 150, diff: 50, cq: 60, jy: 40 },
+                        ],
+                        tableColumns: [
+                            { title: '时刻', key: 'quarter' },
+                            { title: '计划值', key: 'plan' },
+                            { title: '偏差', key: 'diff' },
+                            { title: '城区', key: 'cq', canEdit: true },
+                            { title: '江油', key: 'jy', canEdit: true },
+
+
+                        ],
+                        editKeys: ['cq', 'jy']
+                    }
+                },
+                methods: {
+                    handleUpdateData(editedData, rowIndex) {
+                        var editSum = 0;
+                        var row = editedData[rowIndex];
+                        if (row) {
+                            this.editKeys.forEach(key => {
+                                editSum += isNaN(row[key]) ? 0 : Number(row[key]);
+                            });
+                            var plan = row.plan;
+                            plan = isNaN(plan) ? 0 : Number(plan);
+                            var diff = plan - editSum;
+                            row.diff = diff;
+                            this.$set(this.tableData, rowIndex, row);
+                            // 在这里可以进一步处理编辑后的数据，比如保存到服务器等
+                        }
+                    },
+                    rowClassName(row, index) {
+                        if (row.diff != 0) {
+                            return 'red-row';
+                        }
+                        return '';
+                    }
+                }
+
+            })
+        </script>
+    </body>
+
+</html>
