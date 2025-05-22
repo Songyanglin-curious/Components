@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>配置生成</title>
+        <script src="../../lib/vue.js"></script>
+        <script src="../../lib/echarts.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+
+    <body>
+        <div id="app" style="width:100%;height:100vh;background-color:#000;">
+            <div style="width:100%;height:100%;" id="chart"></div>
+        </div>
+
+        <script>
+            // 示例配置
+            var option = {
+                title: {
+                    text: 'Basic Graph'
+                },
+                tooltip: {},
+                animationDurationUpdate: 1500,
+                animationEasingUpdate: 'quinticInOut',
+                brush: {  // 新增 brush 配置
+                    toolbox: ['rect'],
+                    throttleType: 'debounce',
+                    throttleDelay: 300,
+                    seriesIndex: 0
+                },
+                series: [
+                    {
+                        type: 'graph',
+                        layout: 'none',
+                        symbolSize: 50,
+                        roam: true,
+                        label: {
+                            show: true
+                        },
+                        edgeSymbol: ['circle', 'arrow'],
+                        edgeSymbolSize: [4, 10],
+                        edgeLabel: {
+                            fontSize: 20
+                        },
+                        data: [
+                            { name: 'Node 1', x: 300, y: 300 },
+                            { name: 'Node 2', x: 800, y: 300 },
+                            { name: 'Node 3', x: 550, y: 100 },
+                            { name: 'Node 4', x: 550, y: 500 }
+                        ],
+                        links: [
+                            { source: 0, target: 1, symbolSize: [5, 20], label: { show: true }, lineStyle: { width: 5, curveness: 0.2 } },
+                            { source: 'Node 2', target: 'Node 1', label: { show: true }, lineStyle: { curveness: 0.2 } },
+                            { source: 'Node 1', target: 'Node 3' },
+                            { source: 'Node 2', target: 'Node 3' },
+                            { source: 'Node 2', target: 'Node 4' },
+                            { source: 'Node 1', target: 'Node 4' }
+                        ],
+                        lineStyle: {
+                            opacity: 0.9,
+                            width: 2,
+                            curveness: 0
+                        }
+                    }
+                ]
+            };
+
+            // 初始化图表
+            var myChart = echarts.init(document.getElementById('chart'));
+            myChart.setOption(option);
+
+            // 监听 brushEnd 事件
+            myChart.on('brushEnd', function (params) {
+
+                if (params.areas.length > 0) {
+                    const range = params.areas[0].range;
+                    const [x0, x1] = range[0];
+                    const [y0, y1] = range[1];
+
+                    // 获取系列数据
+                    const series = myChart.getOption().series[0];
+                    const selectedNodes = [];
+
+                    // 遍历所有节点
+                    series.data.forEach((node) => {
+                        // 转换坐标（考虑平移/缩放后的实际像素位置）
+                        const pixelPoint = myChart.convertToPixel(
+                            { seriesIndex: 0 },
+                            [node.x, node.y]
+                        );
+
+                        // 检查坐标是否在框选范围内
+                        if (pixelPoint && pixelPoint.length === 2) {
+                            const [nodeX, nodeY] = pixelPoint;
+                            const inXRange = nodeX >= Math.min(x0, x1) && nodeX <= Math.max(x0, x1);
+                            const inYRange = nodeY >= Math.min(y0, y1) && nodeY <= Math.max(y0, y1);
+
+                            if (inXRange && inYRange) {
+                                selectedNodes.push(node.name);
+                            }
+                        }
+                    });
+
+                    console.log('被选中的节点:', selectedNodes);
+                }
+            });
+        </script>
+    </body>
+
+</html>

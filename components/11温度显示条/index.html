@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>温度条</title>
+
+        <script src="../../lib/vue.js"></script>
+        <script src="./temperature_bar.js"></script>
+        <link rel="stylesheet" href="./temperature_bar.css">
+        <style>
+
+        </style>
+    </head>
+
+    <body>
+        <div id="app" style="width:300px;height:30px;">
+            <temperature-bar min="-10" max="20"></temperature-bar>
+        </div>
+
+    </body>
+    <script>
+        // 获取id test  dom  设置行内样式  display:none;
+        // var test = document.getElementById("test");
+        // test.style.display = "none";
+        var pdp = new Vue({
+            el: '#app',
+            data: function () {
+                return {
+
+                }
+            },
+            mounted: function () {
+                // if (this.$refs.draglinechart) {
+                //     this.$refs.draglinechart.toEdit();
+                // }
+            }
+        });
+
+    </script>
+
+</html>

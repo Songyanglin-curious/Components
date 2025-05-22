@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Canvas 水印示例</title>
+        <style>
+            /* 示例内容样式 */
+            .content {
+                padding: 20px;
+                min-height: 80vh;
+            }
+        </style>
+        <script src="./waterMaker.js"></script>
+
+    </head>
+
+    <body>
+        <div class="content">
+            <h1>机密文档</h1>
+            <p>此处显示敏感数据......</p>
+            <p>员工编号：9527 | 部门：技术研发中心</p>
+        </div>
+        <script>
+
+
+            // 调用示例 - 在页面加载后执行
+            window.onload = function () {
+                canvasWaterMark({
+                    content: "机密文件\n严禁外传\n2024-07-19 张三", // 带换行的文本
+                    rotate: -30,          // 更陡峭的倾斜
+                    alpha: 0.2,           // 更透明的效果
+                    font: "18px Arial",   // 修改字体
+                    fillStyle: "rgba(255,0,0,0.5)", // 红色水印
+                    zIndex: 9999          // 确保在顶层
+                });
+            };
+        </script>
+    </body>
+
+</html>

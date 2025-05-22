@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+    <head>
+        <meta charset="utf-8">
+        <title>3D Pie Chart with ECharts</title>
+        <!-- 引入 ECharts 及 GL 扩展 -->
+        <script src="../../lib/echarts.min.js"></script>
+        <script src="../../lib/echarts-gl.min.js"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script> -->
+    </head>
+
+    <body style="height: 100%; margin: 0">
+        <!-- 图表容器 -->
+        <div id="chart" style="height: 100vh"></div>
+
+        <script>
+            // 初始化图表
+            function generatePie3DData(data, outerRadius, innerRadius, height) {
+                // 根据输入数据生成3D环图的数据系列
+                const series = [];
+                // 计算数据总值
+                const totalValue = data.reduce((sum, item) => sum + item.value, 0);
+                // 初始化起始角度为-90度
+                let startAngle = -Math.PI / 2;
+                // 定义细分段数以提升曲面质量
+                const segments = 50; // 增加细分段数提升曲面质量
+                const diameter = outerRadius * 2;
+                // const visualHeight = Math.min(height, diameter * 0.618);
+                visualHeight = 20
+                data.forEach((item) => {
+                    // 计算当前数据项的角度跨度
+                    const angleSpan = (item.value / totalValue) * Math.PI * 2;
+                    // 计算当前数据项的结束角度
+                    const endAngle = startAngle + angleSpan;
+                    // 根据当前数据项的比例调整高度
+                    height = visualHeight * (item.value / totalValue);
+                    // height = 1;
+                    // 生成顶部环形曲面
+                    series.push(createSurface(
+                        'top',
+                        item.color,
+                        startAngle,
+                        endAngle,
+                        outerRadius,
+                        innerRadius,
+                        height,
+                        segments
+                    ));
+
+                    // 生成底部环形曲面
+                    series.push(createSurface(
+                        'bottom',
+                        item.color,
+                        startAngle,
+                        endAngle,
+                        outerRadius,
+                        innerRadius,
+                        height,
+                        segments
+                    ));
+
+                    // 生成外圆柱面
+                    series.push(createSurface(
+                        'outerSide',
+                        item.color,
+                        startAngle,
+                        endAngle,
+                        outerRadius,
+                        innerRadius,
+                        height,
+                        segments
+                    ));
+
+                    // 生成内圆柱面
+                    series.push(createSurface(
+                        'innerSide',
+                        item.color,
+                        startAngle,
+                        endAngle,
+                        outerRadius,
+                        innerRadius,
+                        height,
+                        segments
+                    ));
+                    // // // 生成起始角度侧面
+                    series.push(createSurface(
+                        'startSide',
+                        item.color,
+                        startAngle,
+                        endAngle,
+                        outerRadius,
+                        innerRadius,
+                        height,
+                        segments
+                    ));
+                    // 生成结束角度侧面
+                    series.push(createSurface(
+                        'endSide',
+                        item.color,
+                        startAngle,
+                        endAngle,
+                        outerRadius,
+                        innerRadius,
+                        height,
+                        segments
+                    ));
+
+
+
+                    // 更新起始角度为当前数据项的结束角度
+                    startAngle = endAngle;
+                });
+
+                // 返回生成的数据系列
+                return series;
+            }
+
+            function createSurface(type, color, startAngle, endAngle, outerRadius, innerRadius, height, segments) {
+                // 创建一个指定类型的3D曲面
+                return {
+                    type: 'surface',
+                    parametric: true,
+                    wireframe: { show: false },
+                    shading: 'color',
+                    itemStyle: {
+                        color: color,
+
+                    },
+                    // 使用参数方程定义曲面形状
+                    parametricEquation: getParametricEquation(
+                        startAngle,
+                        endAngle,
+                        outerRadius,
+                        innerRadius,
+                        height,
+                        type,
+                        segments
+                    )
+                };
+            }
+
+            function getParametricEquation(startAngle, endAngle, R, r, h, type, segments) {
+                // 根据类型、角度范围、半径和高度生成参数方程
+                const angleStep = (endAngle - startAngle) / (segments + 0.001);
+
+                return {
+                    u: {
+                        min: 0,
+                        max: ['startSide', 'endSide'].includes(type) ? 1 : segments // 侧面类型u范围改为0-1
+                    },
+                    v: { min: 0, max: 1 },
+                    x: function (u, v) {
+                        // 根据u值计算角度，并根据类型和v值计算x坐标
+                        const angle = startAngle + u * angleStep;
+                        switch (type) {
+                            case 'top':    // 顶部环形
+                                return Math.cos(angle) * (r + (R - r) * v);
+                            case 'bottom': // 底部环形
+                                return Math.cos(angle) * (r + (R - r) * v);
+                            case 'outerSide': // 外圆柱
+                                return Math.cos(angle) * R;
+                            case 'innerSide': // 内圆柱
+                                return Math.cos(angle) * r;
+                            case 'startSide': // 使用v控制半径插值
+                                return Math.cos(startAngle) * (r + (R - r) * v);
+                            case 'endSide':
+                                return Math.cos(endAngle) * (r + (R - r) * v);
+
+                        }
+                    },
+                    y: function (u, v) {
+                        // 根据u值计算角度，并根据类型和v值计算y坐标
+                        const angle = startAngle + u * angleStep;
+                        switch (type) {
+                            case 'top':
+                                return Math.sin(angle) * (r + (R - r) * v);
+                            case 'bottom':
+                                return Math.sin(angle) * (r + (R - r) * v);
+                            case 'outerSide':
+                                return Math.sin(angle) * R;
+                            case 'innerSide':
+                                return Math.sin(angle) * r;
+                            case 'startSide': // 使用v控制半径插值
+                                return Math.sin(startAngle) * (r + (R - r) * v);
+                            case 'endSide':
+                                return Math.sin(endAngle) * (r + (R - r) * v);
+                        }
+                    },
+                    z: function (u, v) {
+                        // 根据类型和v值计算z坐标
+                        switch (type) {
+                            case 'top': return h;
+                            case 'bottom': return 0;
+                            case 'startSide': // 使用u控制高度
+                            case 'endSide':
+                                return u * h;
+                            default: return v * h; // 圆柱面高度渐变
+                        }
+                    }
+                };
+            }
+
+            // 配置选项
+            option = {
+                tooltip: {
+                    formatter: params => {
+                        // 格式化提示框内容
+                        const dataItem = params.seriesName.split('_')[0];
+                        return `${dataItem}<br/>${params.value[2].toFixed(2)}%`;
+                    }
+                },
+                grid3D: {
+                    // 3D网格配置
+                    show: false,
+                    environment: '#f5f5f5',
+                    viewControl: {
+                        // 视图控制配置
+                        alpha: 45,  // 适当增大俯角
+                        beta: 75,   // 微调水平旋转
+                        distance: 180,  // 拉远观察距离
+                        zoomSensitivity: 1, // 降低缩放灵敏度
+                        light: {
+                            main: {
+                                intensity: 1,    // 主光源强度
+                                shadow: true,      // 启用阴影
+                                shadowQuality: 'high',
+                                position: [150, 200, 300]
+                            },
+                            ambient: {
+                                intensity: 1    // 环境光强度
+                            }
+                        }
+                    },
+                    postEffect: {
+                        // 后处理效果配置
+                        enable: true,
+                        SSAO: {
+                            enable: true,         // 启用环境光遮蔽
+                            radius: 1,
+                            intensity: 1
+                        },
+                        screenSpaceReflection: {
+                            enable: false          // 屏幕空间反射
+                        }
+
+                    }
+                },
+                xAxis3D: { show: false }, // 隐藏x轴
+                yAxis3D: { show: false }, // 隐藏y轴
+                zAxis3D: {
+                    show: false, scale: true,
+                    min: 0,
+                    max: 20
+                }, // 隐藏z轴
+                series: generatePie3DData(
+                    [
+                        { value: 5, name: 'Category A', color: '#FFE780' },
+                        { value: 25, name: 'Category B', color: '#40FEB5' },
+                        { value: 20, name: 'Category C', color: 'blue' },
+                        { value: 15, name: 'Category D', color: 'green' }
+                    ],
+                    50,  // 外半径
+                    10,  // 内半径
+                    10   // 环高
+                ).map(series => ({
+                    ...series,
+                    shading: 'realistic',          // 改用兰伯特着色
+                    material: {
+                        roughness: 0.8,         // 表面粗糙度 (0-1)
+                        metalness: 0.2           // 金属质感 (0-1)
+                    },
+                    itemStyle: {
+                        ...series.itemStyle,
+                        borderColor: '#333',     // 添加边框增强立体感
+                        borderWidth: 0.5
+                    }
+                }))
+            };
+            // 修改初始化代码
+            const chart = echarts.init(document.getElementById('chart'), null, {
+                renderer: 'canvas' // 强制使用 canvas 渲染器
+            });
+            chart.setOption(option);
+
+        </script>
+    </body>
+
+</html>

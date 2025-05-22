@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>颜色转换器</title>
+    <script src="color-transformer.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        
+        .container {
+            margin-top: 30px;
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .example {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>颜色转换器</h1>
+    
+    <div class="instructions">
+        <h2>使用说明</h2>
+        <p>这是一个颜色转换Web组件，支持以下功能：</p>
+        <ul>
+            <li>输入框支持RGB/RGBA/16进制颜色格式</li>
+            <li>颜色选择器可直观选择颜色</li>
+            <li>自动转换为三种格式显示</li>
+            <li>点击任意颜色格式可复制到剪贴板</li>
+        </ul>
+    </div>
+    
+    <div class="container">
+        <h2>默认颜色转换器</h2>
+        <color-transformer></color-transformer>
+    </div>
+    
+    <div class="example">
+        <h2>示例1: 设置初始颜色值</h2>
+        <color-transformer value="#ff0000"></color-transformer>
+    </div>
+    
+    <div class="example">
+        <h2>示例2: RGB颜色</h2>
+        <color-transformer value="rgb(0, 255, 0)"></color-transformer>
+    </div>
+    
+    <div class="example">
+        <h2>示例3: RGBA颜色</h2>
+        <color-transformer value="rgba(0, 0, 255, 0.5)"></color-transformer>
+    </div>
+</body>
+</html>

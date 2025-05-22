@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GSAP学习Canvas</title>
+        <script src="./gsap-public/minified/gsap.min.js"></script>
+
+
+        <style>
+            #canvas {
+                height: 80vh;
+                max-height: 300px;
+                overflow: visible;
+                border: solid 2px red;
+            }
+        </style>
+    </head>
+
+    <body>
+        <canvas id="canvas" width="300" height="300"></canvas>
+        <script>
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "#28a92b";
+
+            let position = { x: 0, y: 0 };
+
+            function draw() {
+                // erase the canvas
+                ctx.clearRect(0, 0, 300, 300);
+                // redraw the square at it's new position
+                ctx.fillRect(position.x, position.y, 100, 100);
+            }
+
+            //animate x and y of point
+            gsap.to(position, {
+                x: 200,
+                y: 200,
+                // ease: "bounce.inOut",
+                ease: "expoScale(0.5,7,power.out)",
+                duration: 3,
+                // delay: 1,//延时1秒开始动画
+                // repeatDelay: 1,//每次重复动画的延时
+                repeat: 3,//重复3次 -1表示无限重复
+                yoyo: true,// 反向播放 会生成两个动画，一个正向播放，一个反向播放
+                // unlike DOM elements, canvas needs to be redrawn and cleared on every tick
+                onUpdate: draw
+            });
+        </script>
+    </body>
+
+</html>

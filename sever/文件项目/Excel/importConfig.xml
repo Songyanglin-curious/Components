@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ROOT>
+    <Test db="JB" idcol="ID" fields="ID,NAME,STATUS,ST_NAME,TYPE_ID,CREATE_TIME">
+        <cols remark="默认值应该可以从数据库取,list类型的数据也应该可以从数据库取">
+            <NAME desc="负责人" check="NOT_NULL"></NAME>
+            <STATUS desc="设备状态" type="list" sql="STATUS_LIST" check="STATUS"></STATUS>
+            <ST_NAME desc="厂站名称" type="def" sql="ST_NAME" check="ST_NAME"></ST_NAME>
+            <TYPE_ID desc="设备类型" type="list" sql="TYPE_ID" from="TYPE" check="TYPE_ID"></TYPE_ID>
+            <!-- 通过在cols节点下设置def属性来设置默认值保留 -->
+            <CREATE_TIME desc="创建时间" def="now" check="CREATE_TIME"></CREATE_TIME>
+        </cols>
+        <start remark="必须存在该节点,导入之前执行"><![CDATA[]]></start>
+        <end remark="必须存在该节点,导入之后执行"><![CDATA[]]></end>
+        <update remark="当idcol存在并且传入时必须存在该节点"><![CDATA[UPDATE jb_cgy.test_import SET NAME={1},STATUS={2},ST_NAME={3},TYPE_ID={4} WHERE ID={0}]]></update>
+        <insert remark="当idcol不存时必须存在该节点"><![CDATA[INSERT INTO jb_cgy.test_import (NAME,STATUS,ST_NAME,TYPE_ID,CREATE_TIME) VALUES ({1},{2},{3},{4},{5})]]></insert>
+
+        <sqls remark="args的参数必须全大写,list取SQL值的第一列和第二列,取第一行第二行">
+            <STATUS_LIST type="sql" db="JB" args="CONDITION" fields="ID,NAME"><![CDATA[SELECT ID,NAME FROM jb_cgy.test_status WHERE COND = {CONDITION}]]></STATUS_LIST>
+            <TYPE_ID type="text" datatype="2d" fields="ID,NAME">
+                <![CDATA[ 
+                1,后台装置
+                2,测控装置
+                3,交换机
+                4,远动机
+                5,工作站
+                6,保护装置
+                ]]>
+            </TYPE_ID>
+            <ST_NAME type="text" datatype="2d" fields="STATION">
+                <![CDATA[
+                测试站11
+                ]]>
+            </ST_NAME>
+        </sqls>
+
+        <checks>
+            <NOT_NULL>
+                <NOTNULL desc="不能为空"></NOTNULL>
+            </NOT_NULL>
+            <STATUS>
+                <NOTNULL desc="不能为空"></NOTNULL>
+                <RANGE desc="在1-6之间" min="1" max="6"></RANGE>
+            </STATUS>
+            <TYPE_ID>
+                <NOTNULL desc="不能为空"></NOTNULL>
+                <RANGE desc="在1-2之间" min="1" max="2"></RANGE>
+            </TYPE_ID>
+
+            <CREATE_TIME>
+                <NOTNULL desc="不能为空"></NOTNULL>
+                <RANGE type="datetime" desc="创建时间不能小于2024-08-15" min="2024-08-15"></RANGE>
+            </CREATE_TIME>
+            <ST_NAME >
+                <NOTNULL desc="站名称不能为空"></NOTNULL>
+                <REGEX desc="站名称长度不能超过10位" pattern="^.{0,10}$"></REGEX>
+            </ST_NAME>
+        </checks>
+    </Test>
+
+
+
+</ROOT>

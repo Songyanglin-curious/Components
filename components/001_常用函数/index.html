@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>工具页面</title>
+        <script src="./colorTrans/color-transformer.js"></script>
+        <script src="./sgcTrans/tabletrans.js"></script>
+        <script src="./sgcTrans/sgc-transformer.js"></script>
+        <script src="./base64Preview/base64-preview.js"></script>
+    </head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            /* max-width: 800px; */
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            flex-basis: 33%;
+        }
+
+
+        .wrapper {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+
+    <body>
+        <div class="wrapper">
+            <div class="container">
+                <h2>默认颜色转换器</h2>
+                <color-transformer></color-transformer>
+            </div>
+            <div class="container">
+                <h2>国调南网表名转换器</h2>
+                <sgc-transformer></sgc-transformer>
+            </div>
+            <div class="container">
+                <h2>Base64 图片预览</h2>
+                <base64-preview></base64-preview>
+            </div>
+        </div>
+
+    </body>
+
+</html>

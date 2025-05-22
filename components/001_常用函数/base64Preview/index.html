@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 图片预览</title>
+    <script src="./base64-preview.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .example {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Base64 图片预览组件</h1>
+    
+    <div class="example">
+        <h2>示例 1: 基本使用</h2>
+        <base64-preview></base64-preview>
+    </div>
+
+    <div class="example">
+        <h2>示例 2: 带初始值</h2>
+        <base64-preview value="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z/C/HgAGgwJ/lK3Q6wAAAABJRU5ErkJggg=="></base64-preview>
+    </div>
+
+    <div class="instructions">
+        <h2>使用说明</h2>
+        <p>1. 在输入框中输入Base64编码的图片字符串</p>
+        <p>2. 图片将自动显示在下方</p>
+        <p>3. 点击输入框右侧的清除按钮可清空内容</p>
+    </div>
+</body>
+</html>

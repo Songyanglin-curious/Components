@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview and Edit Base64 Image</title>
+</head>
+
+<body>
+    <h1>Base64 Image Preview and Edit</h1>
+    <label for="base64Input">Enter Base64 Image:</label>
+    <input type="text" id="base64Input" name="base64Input">
+    <button onclick="previewImage()">预览</button>
+    <button onclick="clearInput()">清除</button>
+    <div id="image-container"></div>
+
+    <script>
+        function previewImage() {
+            var base64Image = document.getElementById('base64Input').value;
+            var imgContainer = document.getElementById('image-container');
+
+            // 清除之前的图像
+            imgContainer.innerHTML = '';
+
+            if (base64Image) {
+                // 创建图像元素
+                var img = document.createElement('img');
+                // 设置图像的 base64 数据作为 src
+
+                img.src = base64Image;
+                // 将图像添加到容器中显示
+                imgContainer.appendChild(img);
+            } else {
+                // 如果输入为空，则显示提示信息
+                imgContainer.innerHTML = '<p>No image to preview.</p>';
+            }
+        }
+
+        function clearInput() {
+            // 清除输入框内容
+            document.getElementById('base64Input').value = '';
+            // 清除图像预览
+            document.getElementById('image-container').innerHTML = '';
+        }
+    </script>
+</body>
+
+</html>

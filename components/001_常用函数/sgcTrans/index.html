@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>国调南网表名转换器</title>
+        <script src="./tabletrans.js"></script>
+        <script src="./sgc-transformer.js"></script>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                line-height: 1.6;
+            }
+
+            h1 {
+                color: #333;
+                text-align: center;
+            }
+
+            .instructions {
+                background-color: #f8f9fa;
+                padding: 15px;
+                border-radius: 5px;
+                margin-bottom: 20px;
+            }
+
+            .example {
+                margin: 20px 0;
+                padding: 15px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+
+            .example-title {
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .example-desc {
+                margin-bottom: 10px;
+                color: #666;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>国调南网表名转换器</h1>
+
+        <div class="instructions">
+            <h2>使用说明</h2>
+            <p>这是一个国调和南网表名转换工具，支持以下功能：</p>
+            <ul>
+                <li>输入国调表名自动转换为南网表名</li>
+                <li>输入南网表名自动转换为国调表名</li>
+                <li>两个输入框互斥，一次只能输入一种表名</li>
+                <li>点击输入框右侧的×按钮可快速清空</li>
+            </ul>
+        </div>
+
+        <div class="example">
+            <div class="example-title">示例1: 国调表名转南网表名</div>
+            <div class="example-desc">输入国调表名如 "SG_ORG_B" 会自动转换为南网表名 "CSG_INST_BAS"</div>
+            <sgc-transformer></sgc-transformer>
+        </div>
+
+        <div class="example">
+            <div class="example-title">示例2: 南网表名转国调表名</div>
+            <div class="example-desc">输入南网表名如 "CSG_INST_BAS" 会自动转换为国调表名 "SG_ORG_B"</div>
+            <sgc-transformer></sgc-transformer>
+        </div>
+    </body>
+
+</html>
