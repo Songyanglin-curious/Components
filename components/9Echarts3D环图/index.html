@@ -25,7 +25,7 @@
                 // 初始化起始角度为-90度
                 let startAngle = -Math.PI / 2;
                 // 定义细分段数以提升曲面质量
-                const segments = 50; // 增加细分段数提升曲面质量
+                const segments = 1000; // 增加细分段数提升曲面质量
                 const diameter = outerRadius * 2;
                 // const visualHeight = Math.min(height, diameter * 0.618);
                 visualHeight = 20
@@ -214,37 +214,47 @@
                 grid3D: {
                     // 3D网格配置
                     show: false,
-                    environment: '#f5f5f5',
+                    environment: '#f9f9f9', // 柔和背景
+
                     viewControl: {
-                        // 视图控制配置
-                        alpha: 45,  // 适当增大俯角
-                        beta: 75,   // 微调水平旋转
-                        distance: 180,  // 拉远观察距离
-                        zoomSensitivity: 1, // 降低缩放灵敏度
+                        alpha: 45,
+                        beta: 75,
+                        distance: 160, // 视距稍微拉近一点
+                        rotateSensitivity: 0.8,
+                        zoomSensitivity: 0.8,
+                        autoRotate: true, // 自动旋转观察
+                        autoRotateSpeed: 1, // 旋转速度
+
                         light: {
                             main: {
-                                intensity: 1,    // 主光源强度
-                                shadow: true,      // 启用阴影
+                                intensity: 2,
+                                shadow: true,
                                 shadowQuality: 'high',
-                                position: [150, 200, 300]
+                                shadowBlur: 10,       // 阴影边缘更柔和
+                                shadowMapWidth: 2048, // 分辨率越高，投影越清晰
+                                shadowMapHeight: 2048,
+                                position: [100, -200, 250]
+
                             },
                             ambient: {
-                                intensity: 1    // 环境光强度
+                                intensity: 0.4,        // 减弱全局环境光
+                                color: '#aaaaaa'       // 改成冷灰色，避免漂色
                             }
                         }
                     },
                     postEffect: {
-                        // 后处理效果配置
                         enable: true,
                         SSAO: {
-                            enable: true,         // 启用环境光遮蔽
-                            radius: 1,
-                            intensity: 1
+                            enable: true,
+                            radius: 3,          // 增大影响范围
+                            intensity: 2,       // 加强遮挡感
+                            blurRadius: 2       // 模糊一下让边缘更自然
                         },
                         screenSpaceReflection: {
-                            enable: false          // 屏幕空间反射
+                            enable: true,       // 启用反射
+                            mirrorSceneDownScale: 2, // 反射质量
+                            blurRadius: 1
                         }
-
                     }
                 },
                 xAxis3D: { show: false }, // 隐藏x轴
@@ -256,20 +266,23 @@
                 }, // 隐藏z轴
                 series: generatePie3DData(
                     [
-                        { value: 5, name: 'Category A', color: '#FFE780' },
-                        { value: 25, name: 'Category B', color: '#40FEB5' },
-                        { value: 20, name: 'Category C', color: 'blue' },
-                        { value: 15, name: 'Category D', color: 'green' }
+                        { value: 5, name: 'Category A', color: '#facc15' },  // 更沉稳的黄色
+                        { value: 25, name: 'Category B', color: '#4ade80' }, // 更柔和的绿色
+                        { value: 20, name: 'Category C', color: '#6366f1' }, // 宝石蓝
+
                     ],
                     50,  // 外半径
                     10,  // 内半径
                     10   // 环高
                 ).map(series => ({
                     ...series,
-                    shading: 'realistic',          // 改用兰伯特着色
+                    // shading: 'realistic',
+                    shading: 'lambert',          // 改用兰伯特着色
                     material: {
-                        roughness: 0.8,         // 表面粗糙度 (0-1)
-                        metalness: 0.2           // 金属质感 (0-1)
+                        roughness: 0.4,
+                        metalness: 0.2,
+                        specularIntensity: 1.2, // 添加镜面反光强度
+                        specularColor: '#ffffff' // 白色高光
                     },
                     itemStyle: {
                         ...series.itemStyle,
@@ -280,7 +293,8 @@
             };
             // 修改初始化代码
             const chart = echarts.init(document.getElementById('chart'), null, {
-                renderer: 'canvas' // 强制使用 canvas 渲染器
+                renderer: 'canvas', // 强制使用 canvas 渲染器
+                devicePixelRatio: window.devicePixelRatio // 让画布使用高清屏缩放
             });
             chart.setOption(option);
 

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Text to Speech</title>
+    </head>
+
+    <body>
+        <input type="text" id="text-to-speak" placeholder="请输入要播报的文字">
+        <button onclick="speakText()">Speak</button>
+
+        <script>
+            function speakText() {
+                const text = document.getElementById('text-to-speak').value;
+
+                // 创建一个SpeechSynthesisUtterance实例
+                const utterance = new SpeechSynthesisUtterance(text);
+
+                // 设置语音属性
+                utterance.lang = 'zh-CN'; // 设置语言，如 'zh-CN' 表示中文
+                utterance.volume = 1; // 音量，范围为 0 到 1
+                utterance.rate = 1; // 语速，范围为 0.1 到 10
+                utterance.pitch = 1; // 音调，范围为 0 到 2
+
+                // 调用 speechSynthesis.speak 方法
+                window.speechSynthesis.speak(utterance);
+            }
+        </script>
+    </body>
+
+</html>

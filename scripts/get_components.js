@@ -27,6 +27,7 @@ async function getSubDirectories(dir) {
 console.log('开始读取子文件夹...', root);
 const componentsPath = path.join(root, 'components');
 getSubDirectories(componentsPath).then(subDirs => {
+    subDirs.sort();
     console.log('子文件夹:', subDirs);
     //将其拼接成js 导出对象
     const exportStr = `var components = ${JSON.stringify(subDirs)}`;
