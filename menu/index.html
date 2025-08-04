@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>导航菜单</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <script src="data.js"></script>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索项目/版本..." />
+            </div>
+
+            <ul id="navContent"></ul>
+        </div>
+
+        <script>
+            // 数据结构保持相同
+
+
+
+
+            // 渲染函数优化
+            function renderNav(data) {
+                const container = document.getElementById('navContent');
+                container.innerHTML = '';
+
+                Object.entries(data).forEach(([region, projects]) => {
+                    // 创建区域标题
+                    const regionDiv = document.createElement('li');
+                    regionDiv.className = 'region';
+                    regionDiv.innerHTML = `<div class="region-title">${region}</div><ul class="project-list"></ul>`;
+                    const projectList = regionDiv.querySelector('.project-list');
+
+                    // 创建项目列表
+                    Object.entries(projects).forEach(([projectName, versions]) => {
+                        const projectItem = document.createElement('li');
+                        projectItem.className = 'project-item';
+
+                        projectItem.innerHTML = `
+                        <div class="project-name">${projectName}</div>
+                        <div class="versions"></div>
+                    `;
+
+                        const versionsDiv = projectItem.querySelector('.versions');
+                        versions.forEach(version => {
+                            const btn = document.createElement('button');
+                            btn.className = 'version-btn';
+                            btn.title = version.name;
+                            btn.textContent = version.name;
+                            btn.onclick = () => window.open(version.url);
+                            versionsDiv.appendChild(btn);
+                        });
+
+                        projectList.appendChild(projectItem);
+                    });
+
+                    container.appendChild(regionDiv);
+                });
+            }
+
+            // 增强的搜索功能
+            function filterNav(query) {
+                if (!query) return renderNav(navData);
+
+                const queryLower = query.toLowerCase();
+                const filtered = {};
+
+                Object.entries(navData).forEach(([region, projects]) => {
+                    const matchedProjects = {};
+                    Object.entries(projects).forEach(([projectName, versions]) => {
+                        const matchedVersions = [];
+
+                        if (projectName.toLowerCase().includes(queryLower)) {
+                            matchedProjects[projectName] = versions;
+                        } else {
+                            versions.forEach(version => {
+                                if (version.name.toLowerCase().includes(queryLower)) {
+                                    matchedVersions.push(version);
+                                }
+                            });
+
+                            if (matchedVersions.length) {
+                                matchedProjects[projectName] = matchedVersions;
+                            }
+                        }
+                    });
+
+                    if (Object.keys(matchedProjects).length) {
+                        filtered[region] = matchedProjects;
+                    }
+                });
+
+                renderNav(filtered);
+            }
+
+            // 事件监听
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                filterNav(e.target.value);
+            });
+
+            // 初始化
+            renderNav(navData);
+        </script>
+    </body>
+
+</html>

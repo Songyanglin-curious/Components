@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>文件预览</title>
+
         <script src="../../lib/vue.js"></script>
 
         <script src="./jszip.min.js"></script>
@@ -17,13 +18,20 @@
         <script src="./exceljs.min.js"></script>
         <script src="./FileSaver.min.js"></script>
 
+
+        <link href="../../lib/SpreadJS.V11/css/gc.spread.sheets.excel2013white.11.0.0.css" rel="stylesheet" />
+        <script src="../../lib/SpreadJS.V11/scripts/gc.spread.sheets.all.11.0.0.min.js"></script>
+        <script src="../../lib/SpreadJS.V11/scripts/gc.spread.excelio.11.0.0.min.js"></script>
+        <!-- <script src="../../lib/SpreadJS.V11/scripts/FileSaver.min.js"></script> -->
+
+        <link rel="stylesheet" href="./file_preview.css">
         <script src="./file_preview.js"></script>
     </head>
 
     <body>
         <div id="app" style="width:100%;height:98vh;">
-            <div style="height: 3px;width: 100%;background-color: aqua;"></div>
-            <file-preview :src="xlsx_path" style="width:100%;height:calc(100% - 3px);"></file-preview>
+            <div style="height: 10px;width: 100%;background-color: aqua;"></div>
+            <file-preview :src="xlsx_path" style="width:50%;height:calc(50% - 10px);"></file-preview>
         </div>
         <script>
             var app = new Vue({
@@ -31,7 +39,7 @@
                 data: {
                     pdf_path: "./docs/1.pdf",
                     docx_path: "./docs/2.docx",
-                    xlsx_path: "./docs/33.xlsx",
+                    xlsx_path: "./docs/test.xlsx",
                 }
                 ,
                 mounted() {
